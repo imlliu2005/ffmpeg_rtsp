@@ -11,7 +11,7 @@ ffmpeg_rtsp::~ffmpeg_rtsp()
 
 void ffmpeg_rtsp::print_version()
 {
-    qDebug() << av_version_info();
-	qDebug() << "hello ffmpeg..." ;
-    qDebug() << avcodec_configuration();
+    qDebug() << "hello ffmpeg..." ;
+    qDebug() << "ffmpeg version info:" << av_version_info();
+    qDebug() << "avcodec configure:" << avcodec_configuration();
 }

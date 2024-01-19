@@ -25,4 +25,20 @@ add_executable(${PROJECT_NAME}
     WIN32 # If you need a terminal for debug, please comment this statement 
     ${srcs} 
 ) 
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets avcodec avformat avutil swresample swscale swscale avfilter) # Qt5 Shared Library
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets avcodec avformat avutil swresample swscale avfilter) # Qt5 Shared Library
+
+
+#设置编译链接的 FFMPEG 库 , 需要把 FFMPEG 的库都配置到下面
+#注意 使用 002_FFMPEG 的前提是 , 该项目必须在 002_FFMPEG 配置后面进行配置
+target_link_libraries(
+	${PROJECT_NAME} PRIVATE	#本项目的解决方案名称
+    Qt5::Widgets    #qt Widget
+	avcodec		    #音视频编码核心库 , 用于音视频或图片编解码
+	avdevice	    #硬件采集 , 加速 , 显示 库
+	avfilter	    #音视频滤波器
+	avformat	    #音视频封装格式生成或解析 
+	avutil		    #该库中封装了一些公共的工具函数
+	postproc	    #封装了同步, 时间计算的简单算法
+	swresample	    #音视频编解码格式预设
+	swscale		    #原始视频格式转换库
+)

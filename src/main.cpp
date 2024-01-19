@@ -1,4 +1,5 @@
 #include "main_window.h"
+#include "ffplay_widget.h"
 #include <QFile>
 #include <QTextStream>
 #include <QApplication>
@@ -34,7 +35,7 @@ int main(int argc, char *argv[])
     qSetMessagePattern("[%{time yyyy-MM-dd hh:mm:ss.zzz}] %{message}");
     //初始化qdebug的输出重定向到文件
     qInstallMessageHandler(outLogMessageToFile);
-    main_window w;
+    ffplay_widget w;
     w.show();
     return a.exec();
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include <QMainWindow>
-#include "ffmpeg_rtsp.h"
+#include "ffplay_widget.h"
 
 class main_window : public QMainWindow {
     Q_OBJECT
@@ -10,9 +10,8 @@ public:
     ~main_window();
 
 private:
-
-ffmpeg_rtsp* ffmpeg_rtsp_;
+    ffplay_widget* ffplay_widget_;
 
 signals:
-    void print_signal();
+ 
 };
