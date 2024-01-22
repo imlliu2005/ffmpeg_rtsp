@@ -6,7 +6,8 @@
                 "${workspaceFolder}/**",
                 "C:/Qt/Qt5.14.2/5.14.2/msvc2017_64/include",
                 "C:/Qt/Qt5.14.2/5.14.2/msvc2017_64/include/QtCore",
-                "C:/Qt/Qt5.14.2/5.14.2/msvc2017_64/include/QtWidgets"
+                "C:/Qt/Qt5.14.2/5.14.2/msvc2017_64/include/QtWidgets",
+                "${workspaceFolder}/src"
             ],
             "defines": [
                 "_DEBUG",

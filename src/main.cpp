@@ -17,7 +17,8 @@ void outLogMessageToFile(QtMsgType type, const QMessageLogContext &context, cons
     if(QFile::exists(current_PathName)==false)
     {
         app_run_addr = "debug.log";
-    }else
+    }
+    else
     {
         app_run_addr = current_PathName + "/"+"debug.log";
     }
@@ -32,6 +33,7 @@ void outLogMessageToFile(QtMsgType type, const QMessageLogContext &context, cons
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    // qSetMessagePattern("[%{time yyyy-MM-dd hh:mm:ss.zzz}] %{file} %{line} %{function} %{message}");
     qSetMessagePattern("[%{time yyyy-MM-dd hh:mm:ss.zzz}] %{message}");
     //初始化qdebug的输出重定向到文件
     qInstallMessageHandler(outLogMessageToFile);
