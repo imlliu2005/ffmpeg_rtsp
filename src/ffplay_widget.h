@@ -10,8 +10,11 @@
 #include <QVBoxLayout>
 #include <QLineEdit>
 #include <QLabel>
-#include "ffplay_process.h"
 
+extern "C" {
+    // #include "ffplayer.h"
+    #include "haha.h"
+}
 class ffplay_widget : public QWidget
 {
     // Q_OBJECT
@@ -20,12 +23,13 @@ public:
     ~ffplay_widget();
 
 private:
+    // VideoState* is_;
 
     // 窗口或者控件句柄
     WId window_handle_; 
     QPushButton* start_btn_;
     QPushButton* stop_btn_;
-    QTextEdit* video_edit_;
+    QTextEdit* video1_edit_;
     QGroupBox* video1_btn_gurop_;
     
     // 布局
@@ -50,8 +54,6 @@ private:
     QLabel* all_cmd_label_;
     QLabel* v5_label_;
     QLineEdit* v5_line_edit_;
-
-    ffplay_process* play_;
 
 signals:
 

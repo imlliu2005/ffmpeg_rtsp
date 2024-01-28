@@ -1,17 +1,10 @@
 #include "ffplay_widget.h"
 #include <QDebug>
+#include <thread>
 
 ffplay_widget::ffplay_widget(QWidget *parent) : QWidget(parent)
 {
     resize(800, 600);
-      // 视频窗口1
-    video_edit_ = new QTextEdit(this);
-    video_edit_->resize(400, 400);
-    // 获取窗口句柄并打印输出
-    window_handle_ = video_edit_->winId();
-    qDebug() << "video_edit handle:" << window_handle_;
-
-    play_ = new ffplay_process(window_handle_, this);
 
     // 组合框
     video1_btn_gurop_ = new QGroupBox("video1", this); 
@@ -29,17 +22,17 @@ ffplay_widget::ffplay_widget(QWidget *parent) : QWidget(parent)
     // 主窗口布局
     plain_layout_ = new QVBoxLayout(this);
 
-    // // 视频窗口1
-    // video_edit_ = new QTextEdit(this);
-    // video_edit_->resize(400, 400);
-    // // 获取窗口句柄并打印输出
-    // window_handle_ = video_edit_->winId();
-    // qDebug() << "video_edit handle:" << window_handle_;
+    // 视频窗口1
+    video1_edit_ = new QTextEdit(this);
+    video1_edit_->resize(400, 400);
+    // 获取窗口句柄并打印输出
+    window_handle_ = video1_edit_->winId();
+    qDebug() << "video_edit handle:" << window_handle_;
     
     video1_layout_ = new QHBoxLayout();
     video1_layout_->setContentsMargins(5, 10, 5, 10);
     video1_layout_->addSpacing(10);
-    video1_layout_->addWidget(video_edit_);
+    video1_layout_->addWidget(video1_edit_);
     video1_layout_->addSpacing(10);
     video1_layout_->addWidget(video1_btn_gurop_);
     video1_layout_->addSpacing(10);
@@ -88,19 +81,20 @@ ffplay_widget::ffplay_widget(QWidget *parent) : QWidget(parent)
     plain_layout_->addLayout(all_cmd_layout_);
 
 
-
+    // is_ = create_ffplayer(0, "second.mp4", 800, 600, 0);
 
     connect(start_btn_, &QPushButton::clicked, this,[=](){
-        play_->start();
+        // std::thread player_thread(run, is_);
+        // haha();
     });
 
     connect(stop_btn_, &QPushButton::clicked, this,[=](){
-    play_->pause();
+
     });
 
 }
 
 ffplay_widget::~ffplay_widget()
 {
-
+    // av_free(is_);
 }

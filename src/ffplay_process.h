@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QProcess>
 #include <QStringList>
+#include "windows.h"
 
 class ffplay_process : public QObject
 {
@@ -22,6 +23,8 @@ private:
     void _ready_read_standard_output();
     void _state_changed(QProcess::ProcessState state);
     void _error_occurred(QProcess::ProcessError error);
+    void _ready_read_standard_error();
+    void _send_key_to_ffplay(DWORD process_id, BYTE virtual_key_code);
 
 private: 
     QProcess* play_process_;

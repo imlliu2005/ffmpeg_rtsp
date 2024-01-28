@@ -1,8 +1,8 @@
-#include "main_window.h"
 #include "ffplay_widget.h"
 #include <QFile>
 #include <QTextStream>
 #include <QApplication>
+
 #pragma comment(lib, "user32.lib")
 
 void outLogMessageToFile(QtMsgType type, const QMessageLogContext &context, const QString &msg)

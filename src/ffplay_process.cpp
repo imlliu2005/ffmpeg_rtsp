@@ -1,6 +1,7 @@
 #include "ffplay_process.h"
 #include <QDebug>
 
+
 ffplay_process::ffplay_process(int handle, QObject *parent) : QObject(parent)
 {
     play_process_ = new QProcess(this);
@@ -25,33 +26,34 @@ void ffplay_process::_init_signal_slot()
     connect(play_process_, &QProcess::readyReadStandardOutput,this, &ffplay_process::_ready_read_standard_output);
     connect(play_process_, &QProcess::stateChanged, this, &ffplay_process::_state_changed);
     connect(play_process_, &QProcess::errorOccurred, this, &ffplay_process::_error_occurred);
+    // connect(play_process_, &QProcess::readyReadStandardError, this, &ffplay_process::_ready_read_standard_error);
 }
 
-void ffplay_process::_finished(int exitCode,QProcess::ExitStatus exitStatus)
+void ffplay_process::_finished(int exitCode, QProcess::ExitStatus exitStatus)
 {
-    qDebug()<<"finished";
-    qDebug()<<exitCode;// 被调用程序的main返回的int
-    qDebug()<<exitStatus;// QProcess::ExitStatus(NormalExit)
-    qDebug() <<"finished-output-readAll:";
-    qDebug()<<QString::fromLocal8Bit(play_process_->readAll());// ""
-    qDebug()<<"finished-output-readAllStandardOutput:";
-    qDebug()<<QString::fromLocal8Bit(play_process_->readAllStandardOutput());// ""
+    qDebug() << "finished-exitcode: " << exitCode;
+    qDebug() << "finished-exitstatus: "<< exitStatus; // QProcess::ExitStatus(NormalExit)
+    qDebug() <<"finished-output-readAll:" << QString::fromLocal8Bit(play_process_->readAll());
+    qDebug() <<"finished-output-readAllStandardOutput:" << QString::fromLocal8Bit(play_process_->readAllStandardOutput());;
+
 }
 
 void ffplay_process::_ready_read()
 {
-    qDebug()<<"readyRead-readAll:";
-    qDebug()<<QString::fromLocal8Bit(play_process_->readAll());// "hello it is ok!"
-    qDebug()<<"readyRead-readAllStandardOutput:";
-    qDebug()<<QString::fromLocal8Bit(play_process_->readAllStandardOutput());// ""
+    qDebug() << "readyRead-readAll:" << QString::fromLocal8Bit(play_process_->readAll());
+    qDebug() << "readyRead-readAllStandardOutput:" << QString::fromLocal8Bit(play_process_->readAllStandardOutput());
 }
 
 void ffplay_process::_ready_read_standard_output()
 {
-    qDebug()<<"readyReadStandardOutput-readAll:";
-    qDebug()<<QString::fromLocal8Bit(play_process_->readAll());// ""
-    qDebug()<<"readyReadStandardOutput-readAllStandardOutput:";
-    qDebug()<<QString::fromLocal8Bit(play_process_->readAllStandardOutput());// ""
+    qDebug() << "readyReadStandardOutput-readAll:" << QString::fromLocal8Bit(play_process_->readAll());
+    qDebug() << "readyReadStandardOutput-readAllStandardOutput:" << QString::fromLocal8Bit(play_process_->readAllStandardOutput());
+}
+
+void ffplay_process::_ready_read_standard_error()
+{
+    QByteArray error = play_process_->readAllStandardError();
+    qDebug() << "readyReadStandardError:" << error;
 }
 
 void ffplay_process::_state_changed(QProcess::ProcessState state)
@@ -74,10 +76,10 @@ void ffplay_process::_state_changed(QProcess::ProcessState state)
     }
 }
 
- void ffplay_process::_error_occurred(QProcess::ProcessError error)
- {
-    qDebug() << "error:" << error;
- }
+void ffplay_process::_error_occurred(QProcess::ProcessError error)
+{
+    qDebug() << "error_occurred:" << error;
+}
 
 void ffplay_process::start()
 {
@@ -87,11 +89,47 @@ void ffplay_process::start()
 
 void ffplay_process::pause()
 {
-    qDebug() << "send p to play_process_...";
-    play_process_->write("p");
+    qDebug() << "send esc to play_process_...";
+    // play_process_->write("p");
+    // _send_key_to_ffplay(play_process_->processId(), VK_ESCAPE);
+    play_process_->write("ESC\n");
+    // // 等待接收响应  
+    // play_process_->waitForBytesWritten();  
+    // play_process_->waitForReadyRead(); 
 }
 
 void ffplay_process::stop()
 {
 
+}
+
+// VK_ESCAPE    27	Esc
+// VK_SPACE	    32	Space
+void ffplay_process::_send_key_to_ffplay(DWORD process_id, BYTE virtual_key_code)
+{
+    qDebug() << "process_id: " << process_id << " virtual_key_code: "<< virtual_key_code; 
+    if(AttachConsole(process_id))
+    {
+        // qDebug() << "AttachConsole success...";
+        // Allocate new console
+        if(!AllocConsole()) 
+        {
+            FreeConsole();
+            qDebug() << "AllocConsole failed...";
+            // return;
+            AllocConsole();
+        }
+
+        keybd_event(virtual_key_code, 0, 0, 0); //Press
+        Sleep(10); // wait
+        keybd_event(virtual_key_code, 0, KEYEVENTF_KEYUP, 0); //Release
+        Sleep(500); 
+
+        //Detach from current process console
+        FreeConsole();
+    }
+    else
+    {
+        qDebug() << "AttachConsole failed...";
+    }
 }

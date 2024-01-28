@@ -7,7 +7,9 @@
                 "C:/Qt/Qt5.14.2/5.14.2/msvc2017_64/include",
                 "C:/Qt/Qt5.14.2/5.14.2/msvc2017_64/include/QtCore",
                 "C:/Qt/Qt5.14.2/5.14.2/msvc2017_64/include/QtWidgets",
-                "${workspaceFolder}/src"
+                "${workspaceFolder}/src",
+                "C:/msys64/mingw64/include/SDL2",
+                "C:/msys64/mingw64/include"
             ],
             "defines": [
                 "_DEBUG",

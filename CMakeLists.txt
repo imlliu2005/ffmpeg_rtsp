@@ -5,7 +5,7 @@ set(CMAKE_PREFIX_PATH "c:/Qt/Qt5.14.2/5.14.2/msvc2017_64") # Qt Kit Dir
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt5 COMPONENTS Widgets REQUIRED) # Qt COMPONENTS
 aux_source_directory(./src srcs)
@@ -17,8 +17,12 @@ add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 include_directories(
     ${PROJECT_SOURCE_DIR}/include 
 )
-message(STATUS "lkmao:PROJECT_SOURCE_DIR -- ${PROJECT_SOURCE_DIR}")
+include_directories(
+    ${PROJECT_SOURCE_DIR}/SDL2/include 
+)
+
 link_directories(${PROJECT_SOURCE_DIR}/lib)
+link_directories(${PROJECT_SOURCE_DIR}/SDL2/lib/x64)
 
 
 add_executable(${PROJECT_NAME}
